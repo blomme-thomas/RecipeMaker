@@ -81,8 +81,8 @@ export class IngredientController {
     ): Observable<Ingredient> {
         return this.ingredientService.findByName(ingredientName).pipe(
             map((ingredient: Ingredient) => {
-                this.ingredientService.updateOne(ingredient.id, { image: file.filename });
-                return { image: file.filename };
+                this.ingredientService.updateOne(ingredient.id, { ingredient_image: file.filename });
+                return { ingredient_image: file.filename };
             })
         );
         
@@ -95,7 +95,7 @@ export class IngredientController {
     ): Observable<Ingredient> {
         return of(response.sendFile(join(process.cwd(), 'upload/ingredientImages/' + imageName))).pipe(
             map(() => {
-                return { image: imageName };
+                return { ingredient_image: imageName };
             })
         );
     }

@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { IngredientEntity } from '../model/ingredient.entity';
-import { DeleteResult, Repository, UpdateResult } from 'typeorm';
+import { DeleteResult, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { from, map, Observable, switchMap } from 'rxjs';
 import { Ingredient } from '../model/ingredient.interface';

@@ -8,5 +8,5 @@ export interface Ingredient {
     id?: number;
     name?: string;
     measure?: Measure;
-    image?: string;
+    ingredient_image?: string;
 }

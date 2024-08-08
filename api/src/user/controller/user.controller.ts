@@ -99,8 +99,8 @@ export class UserController {
         @Request() request
     ): Observable<User> {
         const user = request.user.user;
-        return this.userService.updateOne(user.id, { profileImage: file.filename }).pipe(
-            map((user: User) => ({ profileImage: user.profileImage }))
+        return this.userService.updateOne(user.id, { profile_image: file.filename }).pipe(
+            map((user: User) => ({ profile_image: user.profile_image }))
         )
     }
 
@@ -111,7 +111,7 @@ export class UserController {
     ): Observable<User> {
         return of(response.sendFile(join(process.cwd(), 'upload/profileImages/' + imageName))).pipe(
             map(() => {
-                return { profileImage: imageName }
+                return { profile_image: imageName }
             })
         );
     }
