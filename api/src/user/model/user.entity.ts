@@ -22,7 +22,7 @@ export class UserEntity {
     role: UserRole;
 
     @Column({ nullable: true })
-    profileImage: string;
+    profile_image: string;
 
     @BeforeInsert()
     emailToLowerCase() {

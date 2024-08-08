@@ -63,7 +63,7 @@ export class UserService {
         delete user.role;
 
         this.findOne(id).subscribe((user) => {
-            if (user.profileImage) {
+            if (user.profile_image) {
                 console.log("Supprimer son ancienne image");
             }
         });

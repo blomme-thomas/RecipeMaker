@@ -1,5 +1,7 @@
-import { BeforeInsert, Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn } from "typeorm";
 import { Measure } from "./ingredient.interface";
+import { RecipeEntity } from "src/recipe/model/recipe.entity";
+import { Recipe } from "src/recipe/model/recipe.interface";
 
 @Entity()
 export class IngredientEntity {
@@ -13,5 +15,8 @@ export class IngredientEntity {
     measure: Measure;
 
     @Column({ nullable: true })
-    image: string;
+    ingredient_image: string;
+
+    @ManyToMany(() => RecipeEntity, recipe => recipe.ingredients)
+    recipes: Recipe[]
 }
