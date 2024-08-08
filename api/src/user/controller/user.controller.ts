@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, Query, UploadedFile, UseGuards, UseInterceptors, Request, Res } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, Query, UploadedFile, UseGuards, UseInterceptors, Request, Res, ValidationPipe } from '@nestjs/common';
 import { UserService } from '../service/user.service';
 import { User, UserRole } from '../model/user.interface';
 import { catchError, map, Observable, of, switchMap, tap } from 'rxjs';
@@ -12,6 +12,9 @@ import * as path from 'path';
 import { join } from 'path';
 import { UserIsUserGuard } from 'src/auth/guards/user-is-user.guard';
 import { UpdateResult } from 'typeorm';
+import { CreateUserDto } from '../dto/create-user.dto';
+import { LoginUserDto } from '../dto/login-user.dto';
+import { UpdateUserDto } from '../dto/update-user.dto';
 
 export const storage = {
     storage: diskStorage({
@@ -33,18 +36,18 @@ export class UserController {
 
     @Post()
     create(
-        @Body() user: User
+        @Body(ValidationPipe) createUserDto: CreateUserDto
     ): Observable<User> {
-        return this.userService.create(user).pipe(
+        return this.userService.create(createUserDto).pipe(
             map((user: User) => user)
         );
     }
 
     @Post('login')
     login(
-        @Body() user: User
+        @Body(ValidationPipe) loginUserDto: LoginUserDto
     ): Observable<Object> {
-        return this.userService.login(user).pipe(
+        return this.userService.login(loginUserDto).pipe(
             map((jwt: string) => {
                 return {access_token: jwt};
             })
@@ -76,9 +79,9 @@ export class UserController {
     @Put(':id')
     updateOne(
         @Param('id') id: number,
-        @Body() user: User
+        @Body(ValidationPipe) updateUserDto: UpdateUserDto
     ): Observable<User> {
-        return this.userService.updateOne(id, user);
+        return this.userService.updateOne(id, updateUserDto);
     }
 
     @hasRoles(UserRole.ADMIN)
@@ -86,9 +89,9 @@ export class UserController {
     @Put(':id/role')
     updateRoleOfUser(
         @Param('id') id: number,
-        @Body() user: User
+        @Body(ValidationPipe) updateUserDto: UpdateUserDto
     ): Observable<UpdateResult> {
-        return this.userService.updateRoleOfUser(Number(id), user);
+        return this.userService.updateRoleOfUser(Number(id), updateUserDto);
     }
 
     @Post('upload')
