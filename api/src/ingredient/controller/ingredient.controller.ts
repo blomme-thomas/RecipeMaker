@@ -13,7 +13,7 @@ import { UpdateIngredientDto } from '../dto/update-ingredient.dto';
 
 export const storage = {
     storage: diskStorage({
-        destination: './upload/IngredientImages',
+        destination: './upload/ingredientImages',
         filename: (req, file, cb) => {
             const filename: string = uuidv4();
             const extension: string = path.parse(file.originalname).ext;
