@@ -10,8 +10,11 @@ export class RecipeEntity {
     @Column({ unique: true })
     name: string;
 
-    @Column("text", { array: true })
+    @Column("text", { array: true, nullable: true })
     instructions: string[];
+
+    @Column("text", { array: true, nullable: true })
+    kitchenware: string[];
 
     @Column({ nullable: true })
     recipe_image: string;

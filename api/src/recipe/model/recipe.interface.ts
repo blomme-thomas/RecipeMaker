@@ -4,6 +4,7 @@ export interface Recipe {
     id?: number;
     name?: string;
     instructions?: string[];
+    kitchenware?: string[];
     recipe_image?: string;
     ingredients?: Ingredient[];
 }
