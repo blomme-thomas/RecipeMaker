@@ -9,6 +9,8 @@ import { v4 as uuidv4 } from 'uuid';
 import * as path from 'path';
 import { join } from 'path';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { CreateRecipeDto } from '../dto/create-recipe.dto';
+import { UpdateRecipeDto } from '../dto/update-recipe.dto';
 
 export const storage = {
     storage: diskStorage({
@@ -30,9 +32,9 @@ export class RecipeController {
 
     @Post()
     create(
-        @Body() recipe: Recipe
+        @Body() createRecipeDto: CreateRecipeDto
     ): Observable<Recipe> {
-        return this.recipeService.create(recipe).pipe(
+        return this.recipeService.create(createRecipeDto).pipe(
             map((recipe: Recipe) => {
                 return recipe;
             })
@@ -62,9 +64,9 @@ export class RecipeController {
     @Put(':id')
     updateOne(
         @Param('id') id: number,
-        @Body() recipe: Recipe
+        @Body() updateRecipeDto: UpdateRecipeDto
     ): Observable<Recipe> {
-        return this.recipeService.updateOne(id, recipe).pipe(
+        return this.recipeService.updateOne(id, updateRecipeDto).pipe(
             map((recipe: Recipe) => {
                 return recipe;
             })
