@@ -11,6 +11,7 @@ import { v4 as uuidv4 } from 'uuid';
 import * as path from 'path';
 import { join } from 'path';
 import { UserIsUserGuard } from 'src/auth/guards/user-is-user.guard';
+import { UpdateResult } from 'typeorm';
 
 export const storage = {
     storage: diskStorage({
@@ -33,10 +34,9 @@ export class UserController {
     @Post()
     create(
         @Body() user: User
-    ): Observable<User | Object> {
+    ): Observable<User> {
         return this.userService.create(user).pipe(
-            map((user: User) => user),
-            catchError(err => of({error: err.message}))
+            map((user: User) => user)
         );
     }
 
@@ -52,10 +52,9 @@ export class UserController {
     }
 
     @Get()
-    findAll(): Observable<User[] | Object> {
+    findAll(): Observable<User[]> {
         return this.userService.findAll().pipe(
-            map((users: User[]) => users),
-            catchError(err => of({error: err.message}))
+            map((users: User[]) => users)
         )
     }
 
@@ -78,7 +77,7 @@ export class UserController {
     updateOne(
         @Param('id') id: number,
         @Body() user: User
-    ): Observable<any> {
+    ): Observable<User> {
         return this.userService.updateOne(id, user);
     }
 
@@ -88,7 +87,7 @@ export class UserController {
     updateRoleOfUser(
         @Param('id') id: number,
         @Body() user: User
-    ): Observable<User> {
+    ): Observable<UpdateResult> {
         return this.userService.updateRoleOfUser(Number(id), user);
     }
 
@@ -98,10 +97,10 @@ export class UserController {
     uploadFile(
         @UploadedFile() file,
         @Request() request
-    ): Observable<Object> {
+    ): Observable<User> {
         const user = request.user.user;
         return this.userService.updateOne(user.id, { profileImage: file.filename }).pipe(
-            map((user: User) => ({ profileImgae: user.profileImage }))
+            map((user: User) => ({ profileImage: user.profileImage }))
         )
     }
 
@@ -109,7 +108,11 @@ export class UserController {
     findProfileImage(
         @Param('imageName') imageName: string,
         @Res() response
-    ): Observable<Object> {
-        return of(response.sendFile(join(process.cwd(), 'upload/profileImages/' + imageName)));
+    ): Observable<User> {
+        return of(response.sendFile(join(process.cwd(), 'upload/profileImages/' + imageName))).pipe(
+            map(() => {
+                return { profileImage: imageName }
+            })
+        );
     }
 }
